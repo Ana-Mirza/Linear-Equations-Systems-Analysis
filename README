@@ -1,0 +1,88 @@
+Nume: Mîrza Ana-Maria
+Grupa: 321CA
+
+
+*Algortmii Testați*
+Algoritmii testați sunt GPPS, Householder și Gauss-Seidel, ce se află în fișierele
+cu numele corespunzător lor. Pentru rezolvarea sistemelor superior triunghiulare
+am folosit fișierul SST.m. Algoritmii au fost luați de la Radu Stochitoiu, de
+pe repo-ul de github [1]. 
+
+
+
+*Generarea Testelor de Input*
+Pentru generarea unor matrice random de dimensiuni până la 100, am folosit
+fișierul GenerateInput.m ce generează 20 de matrice random, pătratice
+neconvergente și încă 20 de matrice convergente. Deoarece aveam nevoie de matrice
+convergente pentru testarea metodei Gauss-Seidel, am asigurat convergența
+matricelor făcându-le diagonal dominante (există proprietatea conform căreia
+o matrice diagonal dominantă este convergentă). Cu ajutorul fișierului
+WriteInput.m  am scris matricele generate în folderul "in/". Soluția testelor
+a fost calculată în fișierul GenerateOutput.m ce citea matricea A și vectorul b
+rezultat și folosea operatorul A\b pentru a genera output-ul testului de input.
+După care, acest rezultat a fost scris de fișierul WriteOutput.m în fișierul
+corespunzător de output, în folderul "out/". Pentru citirea input-ului a fost
+făcut fișierul ReadInput.m ce citește din fișierul de input dat, matricea A
+și vectorul b.
+
+
+
+*Teste de Input Adiționale*
+Deoarece am vrut să observ comportamentul și performanța metodelor și pe matrice
+mari, am generat încă un set de 10 teste conținând matrice de dimensiuni de
+ordinul sutelor în folderul "other_tests", cu fișierul GenerateBigMat.m. Acesta
+a generat 10 teste cu matrice convergente de dimensiuni mari în folderul "in/".
+
+
+
+*Testarea Algoritmilor*
+Testarea metodelor expuse s-a făcut cu ajutorul fișierelor TestGPPS.m,
+TestHouseholder.m și TestGaussSeidel.m care prelau input-ul dintr-un fișier de
+input dat și apela metoda corespunzătoare pentru calcularea soluției. Funcțiiile
+de tic și toc au fost folosite pentru a măsura timpul de execuție al metodelor,
+fără să se ia în calcul citirile și scrierile din fișiere (IO). Pentru precizie,
+testele au fost rulate de câteva ori și calculată o medie a timpului de rulare,
+într-ucât la testele mici timpul era atât de mic încât difereau destul de mult
+de la o rulare la alta. Precizia a fost calcultă cu ajutorul formulei 
+||b - A * x||, ce compară soluția calculată de algoritm cu valoarea absolută.
+Toate testele generate random au fost compatibile, iar primele 20 neconvergente
+n-au fost luate în calcul pentru Gauss-Seidel. Timpul și precizia calculate
+pentru fiecare test au fost scrise într-un fișier de output în folderul
+corespunzător "results/" cu ajutorul funcției WriteTimeAndError.m. Cum eroare
+este de ordin extrem de mic (1E-14), acesta nu a putut fii salvat efectiv pentru
+că apare ca fiind 0.
+
+
+
+*Probleme Întâmpinate*
+Am încercat generarea de matrice sparse pentru testarea metodelor, în special
+pentru observarea performanțelor metodei Householder, dar nu am reușit. 
+Funcția folosită a fost srand(), funcție de generare a matricelor sparse
+random de către matlab. Deoarece matricele aveau foarte multe elemente nule,
+când aplicam o metodă de rezolvare a sistemului, acesta le vedea ca fiind
+singulare. Nu am reușit să generez matrice sparse nesigulare pentru a putea
+testa metodele și în acest fel, așa că m-am mulțumit cu testele inițiale.
+
+
+Algoritmii Asociați Regulilor de Build
+run-p1 - rulează fișierul TestGPPS.m
+run-p2 - rulează fișierul TestHouseholder.m
+run-best - rulează fișierul TestGaussSeidel.m
+
+*Rulare Makefile - Posibile Erori*
+De menționat faptul că în funcție de sistemul de operare, comanda de run poate
+să difere și în loc de 'matlab' să fie path-ul executabilului matlab. Las un
+link pentru cum ar trebuii înlocuit matlab-ul din makefile în cazurile
+macos și linux. [2] 
+De asemenea, makefile-ul a fost scris în matlab, ceea ce poate genera eroare
+la spațiere datorită diferențelor de spații pentru tab. E posibil să nu
+meargă din cauza spațierii de sub fiecare etichetă de run. În acest caz,
+ar trebuii șters spațiul și pus un tab din nou pentru regula de 'matlab -batch
+fișier'.
+Sper că am inclus toate informațiile necesare pentru a putea rula makefile-ul.
+Din păcate nu am putut testa decât regulile de rulare individuală din terminal,
+deoarece nu am instalate dependințele pentru make în windows.
+
+
+[1] https://github.com/radusqrt/numerical-methods/tree/master/matlab
+[2] https://www.cdslab.org/paramonte/notes/troubleshooting/bash-matlab-command-not-found/
